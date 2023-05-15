@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from .models.db import db
@@ -8,6 +8,8 @@ from .models.company import Company
 from flask_migrate import Migrate
 from flask_cors import CORS
 import pandas as pd
+import math
+import numpy as np
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,16 +19,14 @@ db.init_app(app)
 Migrate(app, db)
 CORS(app)
 
-# with app.app_context():
-#     db.create_all()
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def react_root(path):
-    if path == "favicon.ico":
-        return app.send_static_file("favicon.ico")
-    return app.send_static_file("index.html")
+
+def are_similar(fractal_index_1, fractal_index_2):
+    return math.fabs(fractal_index_1 - fractal_index_2) < 0.15
 
 
+# API route
+
+# Read the data from csv and load it into database
 @app.route("/read_data", methods=["GET"])
 def read_Data():
 
@@ -60,3 +60,59 @@ def read_Data():
     db.session.commit()
 
     return "Data loaded successfully"
+
+
+# Get the percentile
+@app.route("/percentile/<int:candidate_id>", methods=["GET"])
+def get_Percentile(candidate_id):
+    similar_companies_Id = []
+    candidate = Candidate.query.get(candidate_id)
+    if not candidate:
+        return jsonify({"error": "Candidate not found"}), 404
+
+    # Get companies that are similar
+    for company in Company.query.all():
+        if are_similar(company.fractal_index, candidate.company.fractal_index):
+            similar_companies_Id.append(company.id)
+
+    # Get candidates with the same job title and at similar companies
+    target_candidates = Candidate.query.filter(
+        Candidate.title == candidate.title,
+        Candidate.company_id.in_(similar_companies_Id),
+    ).all()
+
+    # Extract the communication and coding scores and put it into arrays
+    communication_scores = [
+        candidate.communication_score for candidate in target_candidates
+    ]
+    coding_scores = [candidate.coding_score for candidate in target_candidates]
+
+    # calcualte the standard percentiles of the group
+    communication_percentiles = np.percentile(
+        communication_scores, [0, 25, 50, 75, 100]
+    )
+    coding_percentiles = np.percentile(coding_scores, [0, 25, 50, 75, 100])
+
+    # calculate the index of the candidate's scores
+    communication_index = sorted(communication_scores).index(
+        candidate.communication_score
+    )
+    coding_index = sorted(coding_scores).index(candidate.coding_score)
+
+    # calculate the percentiles
+    candidate_communication_percentile = (
+        communication_index / len(communication_scores)
+    ) * 100
+    candidate_coding_percentile = (coding_index / len(coding_scores)) * 100
+
+    # return the candidate percentile and also the 0,25,50,75,100 percentiles
+    # of the group
+    return jsonify(
+        {
+            "candidate": [candidate.to_dict()],
+            "communication_percentile": candidate_communication_percentile,
+            "coding_percentile": candidate_coding_percentile,
+            "standard_communication_percentiles": communication_percentiles.tolist(),
+            "standard_coding_percentiles": coding_percentiles.tolist(),
+        }
+    )

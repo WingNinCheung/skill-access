@@ -1,5 +1,6 @@
-import { useEffect } from "react";
 import "./App.css";
+import { useEffect, useState } from "react";
+import InputForms from "./components/InputForm";
 
 function App() {
   useEffect(() => {
@@ -13,10 +14,15 @@ function App() {
 
   return (
     <div className="App">
-      <div>ok</div>
+      <h1>Skill Access</h1>
+      <div>
+        Simply enter a candidate id to access the percentile for the coding and
+        commmunication score compared to other candidates with the same title
+        and at similar companies.
+      </div>
+      <InputForms />
     </div>
   );
 }
-// "proxy": "http://127.0.0.1:5000/"
 
 export default App;
