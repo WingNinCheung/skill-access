@@ -12,6 +12,7 @@ alembic = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
 flask-cors = "*"
+pandas = "*"
 
 [dev-packages]
 
