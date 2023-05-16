@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Stats from "./stats";
+import Chart from "./chart";
 
 const InputForms = () => {
   const [candidateId, setCandidateId] = useState("");
@@ -14,10 +15,11 @@ const InputForms = () => {
       errors.push("ID cannot be empty");
     } else if (candidateId.length > 3) {
       errors.push("ID cannot have more than 3 digits");
+    } else if (parseInt(candidateId) < 889 || parseInt(candidateId) > 947) {
+      errors.push("ID must between 889 to 947");
     } else if (!/^\d+$/.test(candidateId)) {
       errors.push("Please enter only digits");
     }
-
     setValidationError(errors);
   }, [candidateId]);
 
@@ -51,6 +53,7 @@ const InputForms = () => {
         </button>
       </form>
       <Stats data={data} />
+      <Chart data={data} />
     </div>
   );
 };

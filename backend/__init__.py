@@ -87,12 +87,6 @@ def get_Percentile(candidate_id):
     ]
     coding_scores = [candidate.coding_score for candidate in target_candidates]
 
-    # calcualte the standard percentiles of the group
-    communication_percentiles = np.percentile(
-        communication_scores, [0, 25, 50, 75, 100]
-    )
-    coding_percentiles = np.percentile(coding_scores, [0, 25, 50, 75, 100])
-
     # calculate the index of the candidate's scores
     communication_index = sorted(communication_scores).index(
         candidate.communication_score
@@ -105,14 +99,13 @@ def get_Percentile(candidate_id):
     ) * 100
     candidate_coding_percentile = (coding_index / len(coding_scores)) * 100
 
-    # return the candidate percentile and also the 0,25,50,75,100 percentiles
-    # of the group
+    # return the candidate profile & percentiles & the scores array
     return jsonify(
         {
             "candidate": [candidate.to_dict()],
             "communication_percentile": candidate_communication_percentile,
             "coding_percentile": candidate_coding_percentile,
-            "standard_communication_percentiles": communication_percentiles.tolist(),
-            "standard_coding_percentiles": coding_percentiles.tolist(),
+            "communication_scores": communication_scores,
+            "coding_scores": coding_scores,
         }
     )
