@@ -1,0 +1,43 @@
+.stats-container {
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  width: 30%;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.stats-item {
+  width: 50%;
+  margin-bottom: 5px;
+}
+
+.stats-label {
+  font-weight: bold;
+}
+
+.stats-value {
+  margin-left: 10px;
+}
+
+.percentile-text {
+  margin-top: 10px;
+  width: 100%;
+}
+
+#percentile1 {
+  color: rgb(112, 19, 112);
+  font-weight: bold;
+}
+
+#percentile2 {
+  color: red;
+  font-weight: bold;
+}
+
+.plot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

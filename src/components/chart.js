@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
+import "../styles/stats.css";
 
 const Chart = ({ data }) => {
   const [plotData, setPlotData] = useState(null);
@@ -64,8 +65,9 @@ const Chart = ({ data }) => {
   }
 
   return (
-    <div>
+    <div className="plot-container">
       <Plot
+        className="plot-container"
         data={plotData}
         layout={{
           title:

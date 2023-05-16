@@ -29,37 +29,40 @@ def are_similar(fractal_index_1, fractal_index_2):
 # Read the data from csv and load it into database
 @app.route("/read_data", methods=["GET"])
 def read_Data():
+    try:
+        # do not load data from csv files once db has been filled
+        if Candidate.query.count() > 0 and Company.query.count() > 0:
+            return "Database already filled"
 
-    # do not load data from csv files once db has been filled
-    if Candidate.query.count() > 0 and Company.query.count() > 0:
-        return "Database already filled"
+        # clear data in case of duplcates before loading data
+        db.session.query(Candidate).delete()
+        db.session.query(Company).delete()
 
-    # clear data in case of duplcates before loading data
-    db.session.query(Candidate).delete()
-    db.session.query(Company).delete()
+        candidates_csv = pd.read_csv("data/score-records.csv")
+        companies_csv = pd.read_csv("data/companies.csv")
 
-    candidates_csv = pd.read_csv("data/score-records.csv")
-    companies_csv = pd.read_csv("data/companies.csv")
+        # Iterate over the company csv file data and create Company objects
+        for i, row in companies_csv.iterrows():
+            company = Company(id=row["company_id"], fractal_index=row["fractal_index"])
+            db.session.add(company)
+        db.session.commit()
 
-    # Iterate over the company csv file data and create Company objects
-    for i, row in companies_csv.iterrows():
-        company = Company(id=row["company_id"], fractal_index=row["fractal_index"])
-        db.session.add(company)
-    db.session.commit()
+        # Iterate over the candidate csv file data and create Candidate objects
+        for i, row in candidates_csv.iterrows():
+            candidate = Candidate(
+                id=row["candidate_id"],
+                communication_score=row["communication_score"],
+                coding_score=row["coding_score"],
+                title=row["title"],
+                company_id=row["company_id"],
+            )
+            db.session.add(candidate)
+        db.session.commit()
 
-    # Iterate over the candidate csv file data and create Candidate objects
-    for i, row in candidates_csv.iterrows():
-        candidate = Candidate(
-            id=row["candidate_id"],
-            communication_score=row["communication_score"],
-            coding_score=row["coding_score"],
-            title=row["title"],
-            company_id=row["company_id"],
-        )
-        db.session.add(candidate)
-    db.session.commit()
+        return "Data loaded successfully"
 
-    return "Data loaded successfully"
+    except Exception:
+        return str(Exception), 500
 
 
 # Get the percentile

@@ -1,31 +1,29 @@
 import { useEffect, useState } from "react";
 import Stats from "./stats";
 import Chart from "./chart";
+import "../styles/inputForm.css";
 
 const InputForms = () => {
   const [candidateId, setCandidateId] = useState("");
   const [validationError, setValidationError] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
   const [data, setData] = useState({});
 
   useEffect(() => {
     // error handling for candidate ID
+
     let errors = [];
-    if (candidateId.trim() === "") {
-      errors.push("ID cannot be empty");
-    } else if (candidateId.length > 3) {
+    if (candidateId.length > 3) {
       errors.push("ID cannot have more than 3 digits");
     } else if (parseInt(candidateId) < 889 || parseInt(candidateId) > 947) {
       errors.push("ID must between 889 to 947");
     } else if (!/^\d+$/.test(candidateId)) {
-      errors.push("Please enter only digits");
+      errors.push("Please enter a valid ID");
     }
     setValidationError(errors);
   }, [candidateId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
     const res = await fetch(`/percentile/${candidateId}`);
     if (res.ok) {
       const data = await res.json();
@@ -38,19 +36,27 @@ const InputForms = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <ul>{submitted && validationError.map((error) => <li>{error}</li>)}</ul>
-        <label>
-          Candidate ID:
+      <form onSubmit={handleSubmit} className="form">
+        <ul>
+          {validationError.map((error) => (
+            <li className="error">{error}</li>
+          ))}
+        </ul>
+        <div className="label-container">
+          <label id="label">Candidate ID:</label>
           <input
             type="text"
             value={candidateId}
             onChange={(e) => setCandidateId(e.target.value)}
           />
-        </label>
-        <button disabled={validationError.length} type="submit">
-          See the result
-        </button>
+
+          <button
+            disabled={candidateId.trim() === "" || validationError.length > 0}
+            type="submit"
+          >
+            See the result
+          </button>
+        </div>
       </form>
       <Stats data={data} />
       <Chart data={data} />

@@ -1,13 +1,19 @@
-import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import InputForms from "./components/InputForm";
+import "./styles/index.css";
 
 function App() {
+  // Read both csv files
   useEffect(() => {
     const readFile = async () => {
-      const res = await fetch("/read_data");
-      const data = await res.text();
-      console.log(data);
+      try {
+        const res = await fetch("/read_data");
+        if (!res.ok) {
+          throw new Error("Failed to read the files");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     };
     readFile();
   }, []);
@@ -15,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <h1>Skill Access</h1>
-      <div>
+      <div className="app-description">
         Simply enter a candidate id to access the percentile for the coding and
         commmunication score compared to other candidates with the same title
         and at similar companies.

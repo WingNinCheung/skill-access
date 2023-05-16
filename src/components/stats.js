@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import "../styles/stats.css";
 
 const Stats = ({ data }) => {
-  // do not render if data are not avilable
+  // do not render if data is not available
   if (Object.keys(data).length === 0) {
     return null;
   }
@@ -9,23 +10,42 @@ const Stats = ({ data }) => {
   const candidate = data.candidate[0];
 
   return (
-    <div>
-      <div>Your Candidate data:</div>
-      <div>
-        <div>ID: {candidate.id}</div>
-        <div>Communication Score: {candidate.communication_score}</div>
-        <div>Coding Score: {candidate.coding_score}</div>
-        <div>Title: {candidate.title}</div>
-        <div>Company ID: {candidate.company.id}</div>
-        <div>Company Fractal Index: {candidate.company.fractal_index}</div>
+    <div className="stats-container">
+      <div className="stats-item">
+        <span className="stats-label">ID:</span>
+        <span className="stats-value">{candidate.id}</span>
       </div>
-      <div>
-        *The percentile for your communication score:{" "}
-        {Math.round(data.communication_percentile)}th percentile
+      <div className="stats-item">
+        <span className="stats-label">Communication Score:</span>
+        <span className="stats-value">{candidate.communication_score}</span>
       </div>
-      <div>
-        *The percentile for your coding score:{" "}
-        {Math.round(data.coding_percentile)}th percentile
+      <div className="stats-item">
+        <span className="stats-label">Coding Score:</span>
+        <span className="stats-value">{candidate.coding_score}</span>
+      </div>
+      <div className="stats-item">
+        <span className="stats-label">Title:</span>
+        <span className="stats-value">{candidate.title}</span>
+      </div>
+      <div className="stats-item">
+        <span className="stats-label">Company ID:</span>
+        <span className="stats-value">{candidate.company.id}</span>
+      </div>
+      <div className="stats-item">
+        <span className="stats-label">Company Fractal Index:</span>
+        <span className="stats-value">{candidate.company.fractal_index}</span>
+      </div>
+      <div className="percentile-text">
+        The percentile for your communication score:{" "}
+        <span id="percentile1">
+          {Math.round(data.communication_percentile)}th percentile
+        </span>
+      </div>
+      <div className="percentile-text">
+        The percentile for your coding score:{" "}
+        <span id="percentile2">
+          {Math.round(data.coding_percentile)}th percentile
+        </span>
       </div>
     </div>
   );
