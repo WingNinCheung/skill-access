@@ -3,6 +3,7 @@ import Stats from "./stats";
 import Chart from "./chart";
 import "../styles/inputForm.css";
 
+// This function is to display the input form for candidate ID
 const InputForms = () => {
   const [candidateId, setCandidateId] = useState("");
   const [validationError, setValidationError] = useState([]);
@@ -10,7 +11,6 @@ const InputForms = () => {
 
   useEffect(() => {
     // error handling for candidate ID
-
     let errors = [];
     if (candidateId.length > 3) {
       errors.push("ID cannot have more than 3 digits");

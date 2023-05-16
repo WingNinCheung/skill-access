@@ -1,6 +1,6 @@
-import React from "react";
 import "../styles/stats.css";
 
+// This function is to display the info of the candidate
 const Stats = ({ data }) => {
   // do not render if data is not available
   if (Object.keys(data).length === 0) {

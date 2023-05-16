@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import "../styles/stats.css";
 
+// This function is to display box plots
 const Chart = ({ data }) => {
   const [plotData, setPlotData] = useState(null);
 
@@ -67,7 +68,6 @@ const Chart = ({ data }) => {
   return (
     <div className="plot-container">
       <Plot
-        className="plot-container"
         data={plotData}
         layout={{
           title:
@@ -77,7 +77,7 @@ const Chart = ({ data }) => {
             y: 1,
           },
           xaxis: {
-            showticklabels: false, // Remove tick labels on the x-axis
+            showticklabels: false, // Remove labels on the x-axis
           },
         }}
       />

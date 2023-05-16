@@ -11,11 +11,11 @@ import pandas as pd
 import math
 import numpy as np
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
-# db.create_all()
 Migrate(app, db)
 CORS(app)
 
@@ -38,8 +38,16 @@ def read_Data():
         db.session.query(Candidate).delete()
         db.session.query(Company).delete()
 
-        candidates_csv = pd.read_csv("data/score-records.csv")
-        companies_csv = pd.read_csv("data/companies.csv")
+        # read the csv files
+        try:
+            candidates_csv = pd.read_csv("data/score-records.csv")
+            companies_csv = pd.read_csv("data/companies.csv")
+        except FileNotFoundError:
+            return "CSV file not found", 500
+        except pd.errors.EmptyDataError:
+            return "Empty CSV file", 500
+        except pd.errors.ParserError:
+            return "Error parsing CSV file", 500
 
         # Iterate over the company csv file data and create Company objects
         for i, row in companies_csv.iterrows():
