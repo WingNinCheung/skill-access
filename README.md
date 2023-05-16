@@ -2,7 +2,10 @@
 
 Skill Access is a full-stack web application that allows users to access engineers' coding and communication skills against other engineers that work at similar companies and with the same title (e.g. Junior Engineer or Senior Engineer).
 
+<a href="https://github.com/WingNinCheung/skill-access/wiki">Database Schema</a>
+
 ![Screen Shot 2023-05-16 at 1 41 32 AM](https://github.com/WingNinCheung/skill-access/assets/96600317/c735a8f8-47e8-463a-8071-1581807530f3)
+
 
 
 ## Dataset
