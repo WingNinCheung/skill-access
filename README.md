@@ -9,8 +9,8 @@ Skill Access is a full-stack web application that allows users to access enginee
 
 
 ## Dataset
-- score-records.csv contains the coding and communication scores for all of the users in our sample dataset (https://s3.amazonaws.com/simple-fractal-recruiting/score-records.csv)
-- companies.csv contains the list of firms along with their fractal_index (https://s3.amazonaws.com/simple-fractal-recruiting/companies.csv)
+- score-records.csv contains the coding and communication scores for all of the users in our sample dataset (https://github.com/WingNinCheung/skill-access/blob/main/backend/data/score-records.csv)
+- companies.csv contains the list of firms along with their fractal_index (https://github.com/WingNinCheung/skill-access/blob/main/backend/data/companies.csv)
 
 (A similar company is any company who's absolute difference of fractal_index is less than 0.15. A company is similar to itself)
 
