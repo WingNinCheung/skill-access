@@ -1,6 +1,9 @@
 # Skill Access
 
-Skill Access is a full-stack web application that allows users to access engineers' coding and communication skills against other engineers that work at similar companies and with the same title (e.g. Junior Engineer or Senior Engineer).
+Skill Access is a dynamic web application that empowers users to evaluate engineers' coding and communication skills using a preloaded dataset.
+
+Users can enter a candidate ID within the range of 889-947 and gain insights into the candidate's performance. Skill Access calculates percentiles for their coding and communication scores, showcasing how the candidate compares to others with the same job title and within similar companies.
+
 
 <a href="https://www.youtube.com/watch?v=8C8-FtBiXG0">Youtube Demo</a>
 
@@ -11,6 +14,9 @@ Skill Access is a full-stack web application that allows users to access enginee
 
 
 ## Dataset
+
+The dataset comprises two Excel spreadsheets: one containing coding and communication scores and titles (e.g., Senior Engineer) of engineers from various real-world companies, and the other listing companies along with their fractal_index—a metric that determines company similarity. Companies with a fractal_index of less than 0.15 are considered similar.
+
 - score-records.csv contains the coding and communication scores for all of the users in our sample dataset (https://github.com/WingNinCheung/skill-access/blob/main/backend/data/score-records.csv)
 - companies.csv contains the list of firms along with their fractal_index (https://github.com/WingNinCheung/skill-access/blob/main/backend/data/companies.csv)
 
